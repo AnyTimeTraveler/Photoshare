@@ -23,7 +23,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    @GraphQLQuery(name = "name")
+    @GraphQLQuery(name = "id")
     public Integer getId() {
         return id;
     }
@@ -52,7 +52,7 @@ public class User {
     }
 
     @Column(name = "first_name", nullable = false)
-    @GraphQLQuery(name = "username")
+    @GraphQLQuery(name = "firstName")
     public String getFirstName() {
         return firstName;
     }
@@ -62,7 +62,7 @@ public class User {
     }
 
     @Column(name = "last_name", nullable = false)
-    @GraphQLQuery(name = "username")
+    @GraphQLQuery(name = "lastName")
     public String getLastName() {
         return lastName;
     }
@@ -72,6 +72,7 @@ public class User {
     }
 
     @Column(name = "email", unique = true, nullable = false)
+    @GraphQLQuery(name = "email")
     public String getEmail() {
         return email;
     }

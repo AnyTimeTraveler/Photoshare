@@ -1,10 +1,15 @@
 package org.simonscode.photoshare;
 
+import graphql.execution.AsyncExecutionStrategy;
 import graphql.schema.GraphQLSchema;
+import graphql.servlet.DefaultExecutionStrategyProvider;
+import graphql.servlet.ExecutionStrategyProvider;
 import io.leangen.graphql.GraphQLSchemaGenerator;
 import io.leangen.graphql.metadata.strategy.query.AnnotatedResolverBuilder;
 import io.leangen.graphql.metadata.strategy.value.jackson.JacksonValueMapperFactory;
+import org.simonscode.photoshare.exceptions.ExceptionHandler;
 import org.simonscode.photoshare.queries.PhotoQuery;
+import org.simonscode.photoshare.queries.TagMutation;
 import org.simonscode.photoshare.queries.UserMutation;
 import org.simonscode.photoshare.queries.UserQuery;
 import org.springframework.boot.SpringApplication;
@@ -41,7 +46,15 @@ public class PhotoshareApplication extends SpringBootServletInitializer {
                 .withOperationsFromSingleton(new PhotoQuery())
                 .withOperationsFromSingleton(new UserQuery())
                 .withOperationsFromSingleton(new UserMutation())
+                .withOperationsFromSingleton(new TagMutation())
                 .withValueMapperFactory(new JacksonValueMapperFactory())
                 .generate();
     }
+
+
+    @Bean
+    public ExecutionStrategyProvider executionStrategyProvider() {
+        return new DefaultExecutionStrategyProvider(new AsyncExecutionStrategy(new ExceptionHandler()));
+    }
+
 }
