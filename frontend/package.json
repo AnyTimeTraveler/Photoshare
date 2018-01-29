@@ -1,26 +1,24 @@
 {
-  "name": "frontend",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.2.0",
-    "react-bootstrap": "^0.32.1",
-    "react-dom": "^16.2.0",
-    "react-relay": "^1.4.1",
-    "react-scripts": "1.1.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "relay": "relay-compiler --src ./src --schema ./schema.graphql"
-  },
-  "devDependencies": {
-    "babel-plugin-relay": "^1.4.1",
-    "relay-compiler": "^1.4.1",
-    "eslint": "^4.16.0",
-    "eslint-plugin-react": "^7.6.0",
-    "eslint-plugin-babel": "^4.1.2"
-  }
+    "name": "frontend",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "start": "./node_modules/.bin/webpack-dev-server --watch",
+        "compile": "./node_modules/.bin/webpack"
+    },
+    "devDependencies": {
+        "babel-core": "^6.26.0",
+        "babel-loader": "^7.1.2",
+        "babel-preset-es2015": "^6.24.1",
+        "babel-preset-react": "^6.24.1",
+        "babel-preset-stage-2": "^6.24.1",
+        "eslint": "^4.16.0",
+        "eslint-plugin-babel": "^4.1.2",
+        "eslint-plugin-react": "^7.6.0",
+        "file-loader": "^1.1.6",
+        "react": "^16.2.0",
+        "react-dom": "^16.2.0",
+        "react-bootstrap": "^0.32.1",
+        "webpack": "^3.10.0"
+    }
 }
