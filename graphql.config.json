@@ -1,0 +1,25 @@
+{
+    "schema": {
+        "request": {
+            "url": "http://localhost:8080/graphql",
+            "method": "POST",
+            "postIntrospectionQuery": true,
+            "options": {
+                "headers": {
+                    "user-agent": "JS GraphQL in JetBrains Intellij IDEA (mozilla/5.0)"
+                }
+            }
+        }
+    },
+    "endpoints": [
+        {
+            "name": "Tomcat 8.5 self (http://localhost:8080/graphql)",
+            "url": "http://localhost:8080/graphql",
+            "options": {
+                "headers": {
+                    "user-agent": "JS GraphQL in JetBrains Intellij IDEA (mozilla/5.0)"
+                }
+            }
+        }
+    ]
+}
