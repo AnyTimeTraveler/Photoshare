@@ -17,7 +17,6 @@
     <mapping class="org.simonscode.photoshare.objects.User" />
     <mapping class="org.simonscode.photoshare.objects.Photo" />
     <mapping class="org.simonscode.photoshare.objects.Tag" />
-    <mapping class="org.simonscode.photoshare.objects.TagData" />
     <mapping class="org.simonscode.photoshare.objects.TagType" />
 </session-factory>
 </hibernate-configuration>
