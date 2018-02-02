@@ -12,8 +12,11 @@ public class PhotoMutation {
 
     private Session session = HibernateUtil.openSession();
 
-    public Photo upload(@GraphQLArgument(name = "tags")Set<Tag> tags){
+    public Photo upload(
+            @GraphQLArgument(name = "id") int id,
+            @GraphQLArgument(name = "tags")Set<Tag> tags){
         Photo photo = new Photo();
+        photo.setId(id);
         photo.setTags(tags);
         session.saveOrUpdate(photo);
         return photo;

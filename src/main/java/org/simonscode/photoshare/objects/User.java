@@ -9,7 +9,7 @@ import java.util.Set;
 @Entity
 @Table(name = "member")
 public class User {
-    private Integer id;
+    private long id;
     private String username;
     private String passwordHash;
     private String firstName;
@@ -24,11 +24,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     @GraphQLQuery(name = "id")
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 

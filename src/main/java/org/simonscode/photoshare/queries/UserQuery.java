@@ -19,7 +19,7 @@ public class UserQuery {
     @GraphQLQuery(name = "listUsers")
     public List<User> listUsers(@GraphQLArgument(name = "offset", defaultValue = "0") int offset,
                                 @GraphQLArgument(name = "limit", defaultValue = "10") int limit,
-                                @GraphQLRootContext() graphql.servlet.GraphQLContext context) {
+                                @GraphQLRootContext graphql.servlet.GraphQLContext context) {
         System.out.println(context.getRequest().get().getSession().getId());
         Query<User> query = session.createQuery("from User", User.class);
         query.setFirstResult(offset);
@@ -28,7 +28,7 @@ public class UserQuery {
     }
 
     @GraphQLQuery(name = "whoami")
-    public User whoami(@GraphQLRootContext() graphql.servlet.GraphQLContext context) throws LoginException {
+    public User whoami(@GraphQLRootContext graphql.servlet.GraphQLContext context) throws LoginException {
         HttpSession httpSession = context.getRequest().get().getSession();
 
         Object user = httpSession.getAttribute("user");

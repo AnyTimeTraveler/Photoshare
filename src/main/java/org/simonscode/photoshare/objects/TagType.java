@@ -7,18 +7,18 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tagtype")
 public class TagType {
-    private Integer id;
+    private long id;
     private String Name;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     @GraphQLQuery(name = "id")
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 

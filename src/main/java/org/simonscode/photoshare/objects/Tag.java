@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tag")
 public class Tag {
-    private Integer id;
+    private long id;
     private Set<Photo> photos;
     private Tag parent;
     private TagType type;
@@ -17,15 +17,18 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     @GraphQLQuery(name = "id")
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Photo.class)
+    @JoinTable(name="photo_tag",
+            joinColumns={@JoinColumn(name="tag_id")},
+            inverseJoinColumns={@JoinColumn(name="photo_id")})
     @GraphQLQuery(name = "photos")
     public Set<Photo> getPhotos() {
         return photos;
