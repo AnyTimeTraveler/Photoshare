@@ -1,4 +1,4 @@
-package org.simonscode.photoshare.configuration;
+package org.simonscode.photoshare;
 
 import graphql.execution.AsyncExecutionStrategy;
 import graphql.schema.GraphQLSchema;
@@ -8,34 +8,32 @@ import io.leangen.graphql.GraphQLSchemaGenerator;
 import io.leangen.graphql.metadata.strategy.query.AnnotatedResolverBuilder;
 import io.leangen.graphql.metadata.strategy.value.jackson.JacksonValueMapperFactory;
 import org.simonscode.photoshare.exceptions.ExceptionHandler;
-import org.simonscode.photoshare.repositories.PhotoRepository;
-import org.simonscode.photoshare.repositories.TagRepository;
-import org.simonscode.photoshare.repositories.UserRepository;
+import org.simonscode.photoshare.graphql.PhotoRepository;
+import org.simonscode.photoshare.graphql.TagRepository;
+import org.simonscode.photoshare.graphql.UserEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import javax.persistence.EntityManager;
-
 @Component
 public class GraphQLConfig {
 
-    private EntityManager entityManager;
-
     @Autowired
-    public GraphQLConfig(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    private UserEndpoint userRepository;
+    @Autowired
+    private PhotoRepository photoRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     @Bean
     GraphQLSchema schema() {
         return new GraphQLSchemaGenerator()
                 .withResolverBuilders(new AnnotatedResolverBuilder())
-                .withOperationsFromSingleton(new PhotoRepository(entityManager))
-                .withOperationsFromSingleton(new UserRepository(entityManager))
-                .withOperationsFromSingleton(new TagRepository(entityManager))
+                .withOperationsFromSingleton(userRepository, UserEndpoint.class)
+                .withOperationsFromSingleton(photoRepository, PhotoRepository.class)
+                .withOperationsFromSingleton(tagRepository, TagRepository.class)
                 .withValueMapperFactory(new JacksonValueMapperFactory())
                 .generate();
     }

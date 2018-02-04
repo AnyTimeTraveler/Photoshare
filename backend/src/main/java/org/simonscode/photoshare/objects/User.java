@@ -5,6 +5,7 @@ import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -57,4 +58,8 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Photo.class)
     @GraphQLQuery(name = "profilePicture")
     private Photo profilePicture;
+
+    @Column(name = "last_online", nullable = false)
+    @GraphQLQuery(name = "lastOnline")
+    private Date lastOnline;
 }

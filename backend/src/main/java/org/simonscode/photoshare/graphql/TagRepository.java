@@ -1,22 +1,22 @@
-package org.simonscode.photoshare.repositories;
+package org.simonscode.photoshare.graphql;
 
 import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import org.simonscode.photoshare.objects.Tag;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
+@Repository
+@Transactional
 public class TagRepository {
 
-    private final EntityManager entityManager;
-
-    public TagRepository(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @GraphQLMutation(name = "createTag")
     public Tag createTag(@GraphQLArgument(name = "parentId", defaultValue = "-1") int parentId) {

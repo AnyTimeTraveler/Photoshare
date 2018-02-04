@@ -1,4 +1,4 @@
-package org.simonscode.photoshare.configuration;
+package org.simonscode.photoshare;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

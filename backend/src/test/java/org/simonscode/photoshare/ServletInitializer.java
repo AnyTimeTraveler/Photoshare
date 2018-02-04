@@ -1,6 +1,5 @@
 package org.simonscode.photoshare;
 
-import org.simonscode.photoshare.configuration.PhotoshareApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
