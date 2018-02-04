@@ -16,7 +16,7 @@ class TopBar extends Component {
             <div>
                 <input type={'text'} name={'search'} value={'IM A SEARCH FIELD'}/>
                 <div>
-                    {this.props.whoami}
+                    {this.props.whoami == null ? 'Not logged in' : this.props.whoami.username}
                 </div>
             </div>
         );
