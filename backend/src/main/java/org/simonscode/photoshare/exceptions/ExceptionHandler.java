@@ -11,10 +11,10 @@ public class ExceptionHandler implements DataFetcherExceptionHandler {
     @Override
     public void accept(DataFetcherExceptionHandlerParameters handlerParameters) {
         Throwable exception = handlerParameters.getException();
-        log.trace("GraphQLError", exception);
+        log.error("GraphQLError", exception);
         while (exception.getCause() != null) {
             exception = exception.getCause();
-            log.trace("GraphQLError", exception);
+            log.error("GraphQLError", exception);
         }
         SourceLocation sourceLocation = handlerParameters.getField().getSourceLocation();
         ExecutionPath path = handlerParameters.getPath();

@@ -13,15 +13,7 @@ const query = gql`
 class TopBar extends Component {
     render() {
         const { data: { loading, error, whoami }} = this.props;
-        let text;
-
-        if (loading) {
-            text = 'Loading...';
-        } else if (error) {
-            text = `${error}`;
-        } else {
-            text = whoami.username;
-        }
+        const text = loading ? 'Loading...' : error ? `${error}` : whoami.username;
 
         return (
             <div>

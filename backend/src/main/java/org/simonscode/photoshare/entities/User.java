@@ -1,8 +1,10 @@
-package org.simonscode.photoshare.objects;
+package org.simonscode.photoshare.entities;
 
 
 import io.leangen.graphql.annotations.GraphQLQuery;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,6 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     @GraphQLQuery(name = "id")
+    @Setter(AccessLevel.PRIVATE)
     private long id;
 
     @Column(name = "username", unique = true, nullable = false)
@@ -39,18 +42,18 @@ public class User {
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Photo.class)
     @JoinTable(name = "member_photo", joinColumns = {
-            @JoinColumn(name = "member")
+            @JoinColumn(name = "member_id")
     }, inverseJoinColumns = {
-            @JoinColumn(name = "photo")
+            @JoinColumn(name = "photo_id")
     })
     @GraphQLQuery(name = "photos")
     private Set<Photo> photos;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Tag.class)
     @JoinTable(name = "member_tag", joinColumns = {
-            @JoinColumn(name = "member")
+            @JoinColumn(name = "member_id")
     }, inverseJoinColumns = {
-            @JoinColumn(name = "tag")
+            @JoinColumn(name = "tag_id")
     })
     @GraphQLQuery(name = "tags")
     private Set<Tag> tags;

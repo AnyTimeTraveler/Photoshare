@@ -12,7 +12,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 @EnableAsync
 @EnableScheduling
-@ComponentScan({"org.simonscode.photoshare", "org.simonscode.photoshare.repositories"})
+@ComponentScan({
+        "org.simonscode.photoshare",
+        "org.simonscode.photoshare.repositories",
+        "org.simonscode.photoshare.endpoints.graphql",
+        "org.simonscode.photoshare.endpoints.upload"
+})
 @SpringBootApplication
 public class PhotoshareApplication extends SpringBootServletInitializer {
 

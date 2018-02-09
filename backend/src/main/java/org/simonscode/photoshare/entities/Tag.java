@@ -1,4 +1,4 @@
-package org.simonscode.photoshare.objects;
+package org.simonscode.photoshare.entities;
 
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AccessLevel;
@@ -33,4 +33,11 @@ public class Tag {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = TagType.class)
     @GraphQLQuery(name = "type")
     private TagType type;
+
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
+    @JoinTable(name="member_tag",
+            joinColumns={@JoinColumn(name="tag_id")},
+            inverseJoinColumns={@JoinColumn(name="member_id")})
+    @GraphQLQuery(name = "user")
+    private Set<User> user;
 }

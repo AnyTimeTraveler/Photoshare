@@ -2,7 +2,7 @@ CREATE TABLE photo (
   id   BIGSERIAL NOT NULL
     CONSTRAINT photo_pkey
     PRIMARY KEY,
-  data BYTEA     NOT NULL
+  data BYTEA
 );
 
 CREATE TABLE member (
@@ -20,18 +20,19 @@ CREATE TABLE member (
     UNIQUE,
   profilepicture_id BIGINT
     CONSTRAINT member_profilepicture_id_fkey
-    REFERENCES photo
+    REFERENCES photo,
+  last_online       TIMESTAMP    NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE member_photo (
-  member BIGINT NOT NULL
+  member_id BIGINT NOT NULL
     CONSTRAINT member_photo_mamber_fkey
     REFERENCES member,
-  photo  BIGINT NOT NULL
+  photo_id  BIGINT NOT NULL
     CONSTRAINT mamber_photo_photo_feky
     REFERENCES photo,
   CONSTRAINT member_photo_pkey
-  PRIMARY KEY (member, photo)
+  PRIMARY KEY (member_id, photo_id)
 );
 
 CREATE TABLE tagtype (
@@ -56,14 +57,14 @@ CREATE TABLE tag (
 );
 
 CREATE TABLE member_tag (
-  member BIGINT NOT NULL
+  member_id BIGINT NOT NULL
     CONSTRAINT member_tag_member_fkey
     REFERENCES member,
-  tag    BIGINT NOT NULL
+  tag_id    BIGINT NOT NULL
     CONSTRAINT mamber_tag_tag_fkey
     REFERENCES tag,
   CONSTRAINT member_tag_pkey
-  PRIMARY KEY (member, tag)
+  PRIMARY KEY (member_id, tag_id)
 );
 
 CREATE TABLE photo_tag (
