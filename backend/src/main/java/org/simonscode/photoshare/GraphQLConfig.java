@@ -7,41 +7,43 @@ import graphql.servlet.ExecutionStrategyProvider;
 import io.leangen.graphql.GraphQLSchemaGenerator;
 import io.leangen.graphql.metadata.strategy.query.AnnotatedResolverBuilder;
 import io.leangen.graphql.metadata.strategy.value.jackson.JacksonValueMapperFactory;
-import org.simonscode.photoshare.exceptions.ExceptionHandler;
 import org.simonscode.photoshare.endpoints.graphql.PhotoEndpoint;
 import org.simonscode.photoshare.endpoints.graphql.TagEndpoint;
 import org.simonscode.photoshare.endpoints.graphql.UserEndpoint;
+import org.simonscode.photoshare.exceptions.GraphQLExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 @Component
+@Configuration
 public class GraphQLConfig {
 
-    private final UserEndpoint userRepository;
-    private final PhotoEndpoint photoRepository;
-    private final TagEndpoint tagRepository;
+    private final UserEndpoint userEndpoint;
+    private final PhotoEndpoint photoEndpoint;
+    private final TagEndpoint tagEndpoint;
 
     @Autowired
-    public GraphQLConfig(UserEndpoint userRepository, PhotoEndpoint photoRepository, TagEndpoint tagRepository) {
-        this.userRepository = userRepository;
-        this.photoRepository = photoRepository;
-        this.tagRepository = tagRepository;
+    public GraphQLConfig(UserEndpoint userEndpoint, PhotoEndpoint photoEndpoint, TagEndpoint tagEndpoint) {
+        this.userEndpoint = userEndpoint;
+        this.photoEndpoint = photoEndpoint;
+        this.tagEndpoint = tagEndpoint;
     }
 
     @Bean
     GraphQLSchema schema() {
         return new GraphQLSchemaGenerator()
                 .withResolverBuilders(new AnnotatedResolverBuilder())
-                .withOperationsFromSingleton(userRepository, UserEndpoint.class)
-                .withOperationsFromSingleton(photoRepository, PhotoEndpoint.class)
-                .withOperationsFromSingleton(tagRepository, TagEndpoint.class)
+                .withOperationsFromSingleton(userEndpoint, UserEndpoint.class)
+                .withOperationsFromSingleton(photoEndpoint, PhotoEndpoint.class)
+                .withOperationsFromSingleton(tagEndpoint, TagEndpoint.class)
                 .withValueMapperFactory(new JacksonValueMapperFactory())
                 .generate();
     }
 
     @Bean
     public ExecutionStrategyProvider executionStrategyProvider() {
-        return new DefaultExecutionStrategyProvider(new AsyncExecutionStrategy(new ExceptionHandler()));
+        return new DefaultExecutionStrategyProvider(new AsyncExecutionStrategy(new GraphQLExceptionHandler()));
     }
 }

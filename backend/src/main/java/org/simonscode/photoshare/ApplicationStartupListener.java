@@ -21,6 +21,6 @@ public class ApplicationStartupListener implements ApplicationListener<Applicati
 
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
-        LOGGER.info("Application is running on port: {}", this.port);
+        LOGGER.info("Wooo! Application is running on port: {}", this.port);
     }
 }

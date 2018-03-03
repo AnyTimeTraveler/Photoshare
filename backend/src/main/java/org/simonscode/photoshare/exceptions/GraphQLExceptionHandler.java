@@ -7,7 +7,7 @@ import graphql.language.SourceLocation;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ExceptionHandler implements DataFetcherExceptionHandler {
+public class GraphQLExceptionHandler implements DataFetcherExceptionHandler {
     @Override
     public void accept(DataFetcherExceptionHandlerParameters handlerParameters) {
         Throwable exception = handlerParameters.getException();

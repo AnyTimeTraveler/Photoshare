@@ -7,11 +7,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PhotoRepository extends JpaRepository<Photo, Long> {
-
-    Photo findById(Long tagId);
+    Optional<Photo> findById(Long tagId);
     @Query(value = "SELECT p from Photo p JOIN p.tags t WHERE t.id = :tagId")
     List<Photo> findAllByTagID(@Param("tagId") long tagId);
 }

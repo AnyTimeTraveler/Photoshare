@@ -32,7 +32,7 @@ public class OffsetLimitPagable implements Pageable {
     }
 
     @Override
-    public int getOffset() {
+    public long getOffset() {
         return offset * page;
     }
 

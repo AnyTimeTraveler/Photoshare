@@ -1,5 +1,6 @@
 package org.simonscode.photoshare.entities;
 
+import io.leangen.graphql.annotations.GraphQLIgnore;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -27,10 +28,11 @@ public class Photo {
     private Set<Tag> tags;
 
     @Column(name = "data")
-    private Byte[] data;
+    @GraphQLIgnore
+    private byte[] data;
 
     @GraphQLQuery(name = "url")
     public String getURL() {
-        return "/picture/" + getId();
+        return "/files/" + getId();
     }
 }

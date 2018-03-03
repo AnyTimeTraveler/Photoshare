@@ -3,8 +3,8 @@
 *.iml
 *.ipr
 
-/build/
-/out/
-/target/
-/website/build/
-/website/node_modules/
+/backend/out/
+/backend/target/
+/frontend/build/
+/frontend/babel_cache/
+/frontend/node_modules/
