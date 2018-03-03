@@ -1,4 +1,4 @@
-package org.simonscode.photoshare.endpoints.upload;
+package org.simonscode.photoshare.endpoints.rest;
 
 public class StorageFileNotFoundException extends StorageException {
 

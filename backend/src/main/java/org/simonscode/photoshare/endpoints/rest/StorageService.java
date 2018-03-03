@@ -1,4 +1,4 @@
-package org.simonscode.photoshare.endpoints.upload;
+package org.simonscode.photoshare.endpoints.rest;
 
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;

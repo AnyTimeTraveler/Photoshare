@@ -1,4 +1,4 @@
-package org.simonscode.photoshare.endpoints.upload;
+package org.simonscode.photoshare.endpoints.rest;
 
 @SuppressWarnings("WeakerAccess")
 public class StorageException extends RuntimeException {
