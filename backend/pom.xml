@@ -30,7 +30,6 @@
                 <version>5.0.7</version>
             </plugin>
         </plugins>
-
     </build>
 
     <dependencies>
