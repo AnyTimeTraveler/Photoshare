@@ -41,7 +41,8 @@ CREATE TABLE tagtype (
     PRIMARY KEY,
   name VARCHAR(255) NOT NULL
     CONSTRAINT tagtype_name_key
-    UNIQUE
+    UNIQUE,
+  showAsAlbum BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE tag (

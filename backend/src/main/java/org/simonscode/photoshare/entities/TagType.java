@@ -21,4 +21,8 @@ public class TagType {
     @Column(name = "name", unique = true, nullable = false)
     @GraphQLQuery(name = "name")
     private String name;
+
+    @Column(name = "showAsAlbum", nullable = false)
+    @GraphQLQuery(name = "showAsAlbum")
+    private boolean showAsAlbum = false;
 }
