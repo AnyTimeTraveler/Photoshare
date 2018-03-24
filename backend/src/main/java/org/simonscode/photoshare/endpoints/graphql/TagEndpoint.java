@@ -1,7 +1,5 @@
 package org.simonscode.photoshare.endpoints.graphql;
 
-import io.leangen.graphql.annotations.GraphQLArgument;
-import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import org.simonscode.photoshare.entities.Tag;
 import org.simonscode.photoshare.repositories.TagRepository;
@@ -20,15 +18,15 @@ public class TagEndpoint {
         this.tagRepository = tagRepository;
     }
 
-    @GraphQLMutation(name = "createTag")
-    public Tag createTag(@GraphQLArgument(name = "parentId", defaultValue = "-1") long parentId) {
-        Tag tag = new Tag();
-        if (parentId != -1) {
-            tagRepository.findById(parentId).ifPresent(tag::setParent);
-        }
-        tagRepository.save(tag);
-        return tag;
-    }
+//    @GraphQLMutation(name = "createTag")
+//    public Tag createTag(@GraphQLArgument(name = "parentId", defaultValue = "-1") Long parentId) {
+//        Tag tag = new Tag();
+//        if (parentId != -1) {
+//            tagRepository.findById(parentId).ifPresent(tag::setParent);
+//        }
+//        tagRepository.save(tag);
+//        return tag;
+//    }
 
     @GraphQLQuery(name = "listTags")
     public List<Tag> listTags() {

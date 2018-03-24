@@ -9,8 +9,8 @@ import java.io.IOException;
 @Component
 public interface StorageService {
 
-    long store(MultipartFile file) throws IOException;
+    Long store(MultipartFile file) throws IOException;
 
-    Resource load(long fileId) throws IOException;
+    Resource load(Long fileId) throws IOException;
 
 }

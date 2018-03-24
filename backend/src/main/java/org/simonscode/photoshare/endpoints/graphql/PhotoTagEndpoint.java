@@ -20,14 +20,14 @@ public class PhotoTagEndpoint {
     }
 
     @GraphQLMutation(name = "addTagToPhoto")
-    public void add(@GraphQLArgument(name = "photoId") long photoId,
-                     @GraphQLArgument(name = "tagId") long tagId) {
+    public void add(@GraphQLArgument(name = "photoId") Long photoId,
+                    @GraphQLArgument(name = "tagId") Long tagId) {
 
     }
 
     @GraphQLMutation(name = "removeTagToPhoto")
-    public void remove(@GraphQLArgument(name = "photoId") long photoId,
-                     @GraphQLArgument(name = "tagId") long tagId) {
+    public void remove(@GraphQLArgument(name = "photoId") Long photoId,
+                       @GraphQLArgument(name = "tagId") Long tagId) {
 
     }
 }

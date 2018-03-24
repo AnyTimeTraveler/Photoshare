@@ -13,5 +13,5 @@ import java.util.Optional;
 public interface PhotoRepository extends JpaRepository<Photo, Long> {
     Optional<Photo> findById(Long tagId);
     @Query(value = "SELECT p from Photo p JOIN p.tags t WHERE t.id = :tagId")
-    List<Photo> findAllByTagID(@Param("tagId") long tagId);
+    List<Photo> findAllByTagID(@Param("tagId") Long tagId);
 }

@@ -19,7 +19,7 @@ public class User {
     @Column(name = "id", unique = true, nullable = false)
     @GraphQLQuery(name = "id")
     @Setter(AccessLevel.PRIVATE)
-    private long id;
+    private Long id;
 
     @Column(name = "username", unique = true, nullable = false)
     @GraphQLQuery(name = "username")
@@ -65,4 +65,6 @@ public class User {
     @Column(name = "last_online", nullable = false)
     @GraphQLQuery(name = "lastOnline")
     private Date lastOnline;
+
+    private String telegramUID;
 }

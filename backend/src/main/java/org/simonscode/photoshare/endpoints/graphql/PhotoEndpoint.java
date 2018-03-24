@@ -32,7 +32,7 @@ public class PhotoEndpoint {
     }
 
     @GraphQLQuery(name = "getPhotosOfTag")
-    public List<Photo> getPhotosOfTag(@GraphQLArgument(name = "tag") long tagId) {
+    public List<Photo> getPhotosOfTag(@GraphQLArgument(name = "tag") Long tagId) {
         return photoRepository.findAllByTagID(tagId);
     }
 }

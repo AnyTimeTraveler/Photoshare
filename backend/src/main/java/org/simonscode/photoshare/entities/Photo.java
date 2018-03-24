@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "photo")
 @Data
 public class Photo {
     @Id
@@ -18,7 +17,7 @@ public class Photo {
     @Column(name = "id", unique = true, nullable = false)
     @GraphQLQuery(name = "id")
     @Setter(AccessLevel.PRIVATE)
-    private long id;
+    private Long id;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Tag.class)
     @JoinTable(name="photo_tag",
@@ -35,4 +34,6 @@ public class Photo {
     public String getURL() {
         return "/files/" + getId();
     }
+
+    private String fileName;
 }

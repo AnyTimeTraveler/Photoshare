@@ -9,15 +9,16 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "tag")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tag_type", discriminatorType = DiscriminatorType.STRING)
 @Data
-public class Tag {
+public abstract class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     @GraphQLQuery(name = "id")
     @Setter(AccessLevel.PRIVATE)
-    private long id;
+    private Long id;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Photo.class)
     @JoinTable(name="photo_tag",
@@ -29,10 +30,6 @@ public class Tag {
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Tag.class)
     @GraphQLQuery(name = "parent")
     private Tag parent;
-
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = TagType.class)
-    @GraphQLQuery(name = "type")
-    private TagType type;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = User.class)
     @JoinTable(name="member_tag",

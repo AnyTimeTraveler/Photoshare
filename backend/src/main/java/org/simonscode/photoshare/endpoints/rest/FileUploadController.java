@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -39,11 +38,9 @@ public class FileUploadController {
     @POST
     @Path("upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
+    public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
         storageService.store(file);
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("You successfully uploaded " + file.getOriginalFilename() + "!");
     }
 
     @ExceptionHandler(Exception.class)
