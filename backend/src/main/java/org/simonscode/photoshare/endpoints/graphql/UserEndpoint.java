@@ -1,17 +1,21 @@
 package org.simonscode.photoshare.endpoints.graphql;
 
-import io.leangen.graphql.annotations.*;
+import io.leangen.graphql.annotations.GraphQLArgument;
+import io.leangen.graphql.annotations.GraphQLMutation;
+import io.leangen.graphql.annotations.GraphQLQuery;
+import io.leangen.graphql.annotations.GraphQLRootContext;
 import org.simonscode.photoshare.entities.User;
-import org.simonscode.photoshare.exceptions.LoginException;
 import org.simonscode.photoshare.repositories.OffsetLimitPagable;
 import org.simonscode.photoshare.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Transactional
@@ -19,6 +23,7 @@ public class UserEndpoint {
 
     private final UserRepository userRepository;
 
+    @Autowired
     public UserEndpoint(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -30,17 +35,14 @@ public class UserEndpoint {
     }
 
     @GraphQLQuery(name = "whoami")
-    public User whoami(@GraphQLContext graphql.servlet.GraphQLContext context) throws LoginException {
-        HttpSession httpSession = context.getRequest().orElseThrow(() -> new LoginException("Not logged in")).getSession();
-
-        Object user = httpSession.getAttribute("user");
-        if (user != null && user instanceof User) {
-            return (User) user;
+    public User whoami(@GraphQLRootContext() graphql.servlet.GraphQLContext context) {
+        Optional<HttpServletRequest> request = context.getRequest();
+        if (request.isPresent()) {
+            return (User) request.get().getSession(true).getAttribute("user");
+        } else {
+            return null;
         }
-
-        throw new LoginException("Not logged in");
     }
-
 
     @GraphQLMutation(name = "createUser")
     public User createUser(@GraphQLArgument(name = "username") String username,
@@ -61,22 +63,23 @@ public class UserEndpoint {
     }
 
     @GraphQLMutation(name = "logout")
-    public boolean logout(@GraphQLRootContext() graphql.servlet.GraphQLContext context) throws LoginException {
-        HttpSession httpSession = context.getRequest().orElseThrow(() -> new LoginException("Could not retrieve Session")).getSession();
-        if (httpSession.getAttribute("user") == null) return false;
-        httpSession.setAttribute("user", null);
+    public boolean logout(@GraphQLRootContext() graphql.servlet.GraphQLContext context) {
+        context.getRequest().ifPresent(request -> request.getSession().invalidate());
         return true;
     }
 
     @GraphQLMutation(name = "login")
     public User login(@GraphQLArgument(name = "username", defaultValue = "NULL") String username,
                       @GraphQLArgument(name = "passwordHash", defaultValue = "NULL") String passwordHash,
-                      @GraphQLRootContext() graphql.servlet.GraphQLContext context) throws LoginException {
-        HttpSession httpSession = context.getRequest().orElseThrow(() -> new LoginException("Could not initialize Session")).getSession();
+                      @GraphQLRootContext() graphql.servlet.GraphQLContext context) {
+        Optional<HttpServletRequest> httpRequest = context.getRequest();
 
-        User user = userRepository.findUserByUsernameAndPasswordHash(username, passwordHash);
-        if (user == null) return null;
-        httpSession.setAttribute("user", user);
-        return user;
+        if (httpRequest.isPresent()) {
+            User user = userRepository.findUserByUsernameAndPasswordHash(username, passwordHash);
+            if (user == null) return null;
+            httpRequest.get().getSession(true).setAttribute("user", user);
+            return user;
+        }
+        return null;
     }
 }

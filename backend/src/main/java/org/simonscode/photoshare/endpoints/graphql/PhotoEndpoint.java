@@ -6,6 +6,7 @@ import io.leangen.graphql.annotations.GraphQLQuery;
 import org.simonscode.photoshare.entities.Photo;
 import org.simonscode.photoshare.repositories.PhotoRepository;
 import org.simonscode.photoshare.repositories.TagRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ public class PhotoEndpoint {
     private final PhotoRepository photoRepository;
     private final TagRepository tagRepository;
 
+    @Autowired
     public PhotoEndpoint(PhotoRepository photoRepository, TagRepository tagRepository) {
         this.photoRepository = photoRepository;
         this.tagRepository = tagRepository;
