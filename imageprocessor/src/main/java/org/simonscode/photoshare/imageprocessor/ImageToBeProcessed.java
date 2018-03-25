@@ -1,15 +1,19 @@
 package org.simonscode.photoshare.imageprocessor;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.Serializable;
+import javax.persistence.*;
 
 @Entity
-@Table(schema = "imageprocessor", name = "imagetobeprocessed")
+@Table(schema = "imageprocessor")
 @Data
-public class ImageToBeProcessed implements Serializable {
-    private final byte[] data;
+public class ImageToBeProcessed {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    @Setter(AccessLevel.PRIVATE)
     private Long id;
+    private byte[] data;
 }
