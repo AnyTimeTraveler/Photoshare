@@ -1,26 +1,16 @@
 const webpack = require('webpack');
-const path = require('path');
 
 module.exports = {
-    entry: path.join(__dirname, 'src', 'index.js'),
-    output: {
-        path: path.join(__dirname, 'public'),
-        filename: 'bundle.js',
-    },
-    devServer: {
-        port: 8000,
-        contentBase: path.join(__dirname, 'public'),
-        publicPath: '/',
-    },
+    entry: [
+        'react-hot-loader/patch',
+        './src/index.js',
+    ],
     module: {
-        loaders: [
+        rules: [
             {
-                test: path.join(__dirname, 'src'),
-                loader: 'babel-loader',
-                query: {
-                    cacheDirectory: 'babel_cache',
-                    presets: [ 'react', 'es2015', 'stage-2' ],
-                },
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: [ 'babel-loader' ],
             },
             {
                 test: /\.css$/,
@@ -44,11 +34,22 @@ module.exports = {
             },
         ],
     },
-    devtool: 'source-map',
+    resolve: {
+        extensions: [ '*', '.js', '.jsx' ],
+    },
+    output: {
+        path: `${__dirname}/public`,
+        publicPath: '/',
+        filename: 'bundle.js',
+    },
     plugins: [
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-        }),
-        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
     ],
+    devtool: 'source-map',
+    devServer: {
+        port: 8000,
+        contentBase: './public',
+        historyApiFallback: true,
+        hot: true,
+    },
 };

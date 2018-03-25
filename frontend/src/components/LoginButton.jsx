@@ -19,7 +19,7 @@ class LoginButton extends Component {
     }
 
     render() {
-        return <input type={'button'} onClick={this.onClick.bind(this)} value={'Login'} />;
+        return <input type={'button'} onClick={this.onClick.bind(this)} value={'Login'}/>;
     }
 }
 
