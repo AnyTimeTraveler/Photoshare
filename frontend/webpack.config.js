@@ -3,7 +3,7 @@ const webpack = require('webpack');
 module.exports = {
     entry: [
         'react-hot-loader/patch',
-        './src/index.js',
+        './src/index.jsx',
     ],
     module: {
         rules: [
@@ -47,6 +47,9 @@ module.exports = {
     ],
     devtool: 'source-map',
     devServer: {
+        proxy: {
+            '/graphql': 'http://localhost:8080/',
+        },
         port: 8000,
         contentBase: './public',
         historyApiFallback: true,

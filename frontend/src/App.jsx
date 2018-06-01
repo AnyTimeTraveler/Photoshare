@@ -13,10 +13,11 @@ import Login from './pages/login';
 import ProtectedRoute from './components/ProtectedRoute';
 import reducers from './state/reducers';
 import { AppContainer } from 'react-hot-loader';
+import { Provider } from 'react-redux';
 
 
 const client = new ApolloClient({
-    uri: 'http://localhost:8080/graphql',
+    uri: '/graphql',
 });
 
 
@@ -28,19 +29,21 @@ const store = createStore(
 class App extends React.Component {
     render() {
         return <AppContainer>
-            <ApolloProvider client={client} store={store}>
-                <BrowserRouter>
-                    <div>
-                        <TopBar/>
-                        <Switch>
-                            <Route path="/login" component={Login}/>
-                            <ProtectedRoute path="/" exact={true} component={MyPhotos}/>
-                            <ProtectedRoute path="/upload" component={Upload}/>
-                            <ProtectedRoute path="/search" component={SearchResults}/>
-                            <ProtectedRoute path="/settings" component={Settings}/>
-                        </Switch>
-                    </div>
-                </BrowserRouter>
+            <ApolloProvider client={client}>
+                <Provider store={store}>
+                    <BrowserRouter>
+                        <div>
+                            <TopBar/>
+                            <Switch>
+                                <Route path={'/login'} component={Login}/>
+                                <ProtectedRoute path={'/'} exact={true} component={MyPhotos}/>
+                                <ProtectedRoute path={'/upload'} component={Upload}/>
+                                <ProtectedRoute path={'/search'} component={SearchResults}/>
+                                <ProtectedRoute path={'/settings'} component={Settings}/>
+                            </Switch>
+                        </div>
+                    </BrowserRouter>
+                </Provider>
             </ApolloProvider>
         </AppContainer>;
     }

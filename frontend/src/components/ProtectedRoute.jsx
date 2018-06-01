@@ -1,10 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 
-class ProtectedRoute extends Route {
+@connect(state => state.auth)
+export default class ProtectedRoute extends Route {
     static propTypes = {
         component: PropTypes.func.isRequired,
         path: PropTypes.string.isRequired,
@@ -12,23 +12,13 @@ class ProtectedRoute extends Route {
     };
 
     render() {
-        if (auth.isAuthenticated) {
+        if (this.props.user) {
             return super.render();
         }
         return <Redirect
             to={{
-                pathname: auth.loginPath,
+                pathname: '/login',
                 props: { from: this.props.location },
             }}/>;
     }
 }
-
-const whoami = gql`
-    query whoami {
-        whoami {
-            id
-        }
-    }
-`;
-
-export default graphql(whoami)(ProtectedRoute);
