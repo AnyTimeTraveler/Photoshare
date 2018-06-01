@@ -17,14 +17,14 @@ export default class LoginForm extends Component {
     };
 
     static defaultProps = {
-        from: '/',
+        redirect: '/',
     };
 
     render() {
-        const { username, password, isSuccess, from } = this.props;
+        const { username, password, isSuccess, redirect } = this.props;
 
         return isSuccess ?
-            <Redirect to={from}/> :
+            <Redirect to={redirect}/> :
             <div>
                 <TextInputField label={'Username'} value={username} onChange={value => this.props.setField('username', value)}/>
                 <PasswordInputField label={'Password'} value={password} onChange={value => this.props.setField('password', value)}/>

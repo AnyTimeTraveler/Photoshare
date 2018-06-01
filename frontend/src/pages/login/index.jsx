@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
-import { authLoginReset, authLoginSuccess, authLogoutStart, authSetField } from '../../state/auth/actions';
+import { authLoginReset, authLoginSuccess, authSetField } from '../../state/auth/actions';
 import LoginForm from './LoginForm';
 
 const LOGIN = gql`

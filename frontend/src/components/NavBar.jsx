@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import NavBarLink from './presentational/navbar/NavBarLink';
 
-class TopBar extends Component {
+export default class NavBar extends Component {
     render() {
-        return <nav className={'navbar'}> {/* is-transparent*/}
+        return <nav className={'navbar'}>
             <div className={'navbar-brand'}>
-                <Link to={'/'} className={'navbar-item'}>
+                <NavBarLink to={'/'}>
                     <img src={'https://bulma.io/images/bulma-logo.png'} alt={'Bulma: a modern CSS framework based on Flexbox'} width={'112'} height={'28'}/>
-                </Link>
+                </NavBarLink>
                 <div className={'navbar-burger burger'} data-target={'navbarExampleTransparentExample'}>
                     <span/>
                     <span/>
@@ -17,9 +17,10 @@ class TopBar extends Component {
 
             <div className={'navbar-menu'}>
                 <div className={'navbar-start'}>
-                    <Link to={'/'}>
-                        Home
-                    </Link>
+                    <NavBarLink to={'/'}>Home</NavBarLink>
+                    <NavBarLink to={'/upload'}>Upload</NavBarLink>
+                    <NavBarLink to={'/search'}>Search</NavBarLink>
+                    <NavBarLink to={'/settings'}>Settings</NavBarLink>
                 </div>
 
                 <div className={'navbar-end'}>
@@ -31,5 +32,3 @@ class TopBar extends Component {
         </nav>;
     }
 }
-
-export default TopBar;
