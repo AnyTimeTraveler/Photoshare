@@ -20,6 +20,9 @@ public abstract class Tag {
     @Setter(AccessLevel.PRIVATE)
     private Long id;
 
+    @GraphQLQuery(name = "name")
+    private String name;
+
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Photo.class)
     @JoinTable(name="photo_tag",
             joinColumns={@JoinColumn(name="tag_id")},
