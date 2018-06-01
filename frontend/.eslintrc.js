@@ -34,7 +34,6 @@ module.exports = {
         'no-compare-neg-zero': ERROR,
         'no-cond-assign': ERROR,
         'no-console': WARN,
-        'no-console': WARN,
         'no-constant-condition': ERROR,
         'no-control-regex': ERROR,
         'no-debugger': ERROR,

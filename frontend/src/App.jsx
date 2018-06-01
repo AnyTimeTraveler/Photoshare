@@ -6,7 +6,7 @@ import { AppContainer } from 'react-hot-loader';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import MyPhotos from './pages/myPhotos';
-import NavBar from './components/NavBar';
+import NavBar from './components/presentational/navbar/NavBar';
 import Settings from './pages/settings';
 import SearchResults from './pages/searchResults';
 
