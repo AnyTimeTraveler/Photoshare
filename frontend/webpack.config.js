@@ -50,6 +50,7 @@ module.exports = {
         proxy: {
             '/graphql': 'http://localhost:8080/',
         },
+        disableHostCheck: true,
         port: 8000,
         contentBase: './public',
         historyApiFallback: true,
