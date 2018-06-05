@@ -1,12 +1,16 @@
 package org.simonscode.photoshare.entities;
 
 
+import io.leangen.graphql.annotations.GraphQLIgnore;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Set;
 
@@ -26,6 +30,7 @@ public class User {
     private String username;
 
     @Column(name = "password_hash", nullable = false)
+    @GraphQLIgnore
     private String passwordHash;
 
     @Column(name = "first_name", nullable = false)
@@ -39,6 +44,11 @@ public class User {
     @Column(name = "email", unique = true, nullable = false)
     @GraphQLQuery(name = "email")
     private String email;
+
+    @GraphQLQuery(name = "emailhash")
+    public String getEmailHash() throws NoSuchAlgorithmException {
+        return DatatypeConverter.printHexBinary(MessageDigest.getInstance("MD5").digest(getEmail().getBytes())).toLowerCase();
+    }
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Photo.class)
     @JoinTable(name = "member_photo", joinColumns = {

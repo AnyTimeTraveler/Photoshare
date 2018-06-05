@@ -60,6 +60,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Jersey -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>2.27</version>
+        </dependency>
+
         <!-- GraphQL -->
         <dependency>
             <groupId>io.leangen.graphql</groupId>

@@ -37,6 +37,7 @@ public class UserEndpoint {
     @GraphQLQuery(name = "whoami")
     public User whoami(@GraphQLRootContext() graphql.servlet.GraphQLContext context) {
         Optional<HttpServletRequest> request = context.getRequest();
+        //noinspection OptionalIsPresent
         if (request.isPresent()) {
             return (User) request.get().getSession(true).getAttribute("user");
         } else {

@@ -14,4 +14,6 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
     Optional<Photo> findById(Long tagId);
     @Query(value = "SELECT p from Photo p JOIN p.tags t WHERE t.id = :tagId")
     List<Photo> findAllByTagID(@Param("tagId") Long tagId);
+    @Query(value = "SELECT p from Photo p JOIN p.owner o WHERE o.id = :ownerId")
+    List<Photo> findAllByOwnerID(@Param("ownerId") Long ownerId);
 }

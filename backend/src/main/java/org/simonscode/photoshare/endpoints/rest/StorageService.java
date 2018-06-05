@@ -1,16 +1,17 @@
 package org.simonscode.photoshare.endpoints.rest;
 
-import org.springframework.core.io.Resource;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.simonscode.photoshare.entities.User;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 @Component
 public interface StorageService {
 
-    Long store(MultipartFile file) throws IOException;
+    Long store(User user, InputStream file, FormDataContentDisposition fileDetail) throws IOException;
 
-    Resource load(Long fileId) throws IOException;
+    byte[] load(Long fileId) throws IOException;
 
 }

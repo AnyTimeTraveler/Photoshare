@@ -1,17 +1,18 @@
 package org.simonscode.photoshare.endpoints.rest;
 
 
+import com.google.common.io.ByteStreams;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.simonscode.photoshare.entities.Photo;
+import org.simonscode.photoshare.entities.User;
 import org.simonscode.photoshare.repositories.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
 @Service
@@ -25,20 +26,21 @@ public class DatabaseStorageService implements StorageService {
     }
 
     @Override
-    public Long store(MultipartFile file) throws IOException {
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+    public Long store(User user, InputStream inputStream, FormDataContentDisposition fileDetail) throws IOException {
+        String filename = StringUtils.cleanPath(fileDetail.getFileName());
 
         Photo photo = new Photo();
-        photo.setFileName(filename);
-        photo.setData(file.getBytes());
+        photo.setOwner(user);
+        photo.setFilename(filename);
+        photo.setData(ByteStreams.toByteArray(inputStream));
         photoRepository.save(photo);
         return photo.getId();
     }
 
     @Override
-    public Resource load(Long fileId) throws IOException {
+    public byte[] load(Long fileId) throws IOException {
         Optional<Photo> photo = photoRepository.findById(fileId);
         if (!photo.isPresent()) throw new FileNotFoundException();
-        return new ByteArrayResource(photo.get().getData());
+        return photo.get().getData();
     }
 }

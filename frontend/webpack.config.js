@@ -49,8 +49,10 @@ module.exports = {
     devServer: {
         proxy: {
             '/graphql': 'http://localhost:8080/',
+            '/api': 'http://localhost:8080/',
         },
         disableHostCheck: true,
+        host: '0.0.0.0',
         port: 8000,
         contentBase: './public',
         historyApiFallback: true,

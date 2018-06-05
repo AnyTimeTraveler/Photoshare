@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import NavBarLink from './NavBarLink';
 import { connect } from 'react-redux';
 import { authLoginSuccess } from '../../../state/auth/actions';
+import UserIcon from './UserIcon';
 
-@connect(() => {
-}, { authLoginSuccess })
+@connect(state => ({
+    user: state.auth.user,
+}), { authLoginSuccess })
 export default class NavBar extends Component {
     render() {
         return <nav className={'navbar'}>
@@ -29,7 +31,7 @@ export default class NavBar extends Component {
                 </div>
 
                 <div className={'navbar-end'}>
-                    Userprofile
+                    {this.props.user && <UserIcon user={this.props.user}/>}
                 </div>
             </div>
         </nav>;

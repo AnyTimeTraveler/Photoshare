@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
-import FileUploadDropArea from '../../components/presentational/forms/FileUploadDropArea';
-import Box from '../../components/presentational/forms/Box';
-
+import { DropzoneComponent } from 'react-dropzone-component';
 
 export default class Upload extends Component {
     render() {
-        return <Box style={{ margin: '5%' }}>
-            <FileUploadDropArea/>
-        </Box>;
+        const componentConfig = {
+            postUrl: '/api/files/upload',
+            showFiletypeIcon: true,
+        };
+        const djsConfig = {
+            autoProcessQueue: true,
+            method: 'POST',
+        };
+        const eventHandlers = { addedfile: file => console.log(file) };
+
+        return <DropzoneComponent
+            config={componentConfig}
+            eventHandlers={eventHandlers}
+            djsConfig={djsConfig}
+        />;
     }
 }

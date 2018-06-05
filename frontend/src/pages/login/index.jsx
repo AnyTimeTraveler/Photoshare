@@ -5,11 +5,17 @@ import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import { authLoginReset, authLoginSuccess, authSetField } from '../../state/auth/actions';
 import LoginForm from './LoginForm';
+import { Redirect } from 'react-router-dom';
 
 const LOGIN = gql`
     mutation login($username: String!, $password: String!) {
         login(username: $username, passwordHash: $password) {
             id
+            username
+            email
+            emailhash
+            firstName
+            lastName
         }
     }
 `;
@@ -20,13 +26,17 @@ const LOGIN = gql`
     password: state.auth.loginForm.password,
     isLoggedin: state.auth.user != null,
 }), {
-    loginSuccess: authLoginSuccess,
+    onLoginSuccess: authLoginSuccess,
     resetLogin: authLoginReset,
     setField: authSetField,
 })
 export default class Login extends Component {
     static propTypes = {
-        from: PropTypes.string,
+        redirect: PropTypes.string,
+    };
+
+    static defaultProps = {
+        redirect: '/',
     };
 
     componentDidMount() {
@@ -34,29 +44,31 @@ export default class Login extends Component {
     }
 
     render() {
-        const { username, password, isLoggedin, loginSuccess } = this.props;
+        const { username, password, onLoginSuccess, redirect } = this.props;
         // noinspection RequiredAttributes
 
-        return <Mutation mutation={LOGIN}>{(login, { data }) => {
-            const success = data && data.login && data.login.id != null;
+        return <Mutation mutation={LOGIN}>{
+            (login, { data }) => {
+                const success = data && data.login && data.login.id != null;
 
-            if (success) {
-                loginSuccess(data.login);
+                if (success) {
+                    onLoginSuccess(data.login);
+                }
+
+                return success ?
+                    <Redirect to={redirect}/> :
+                    <LoginForm
+                        loginAction={() => login({
+                            variables: {
+                                username,
+                                password,
+                            },
+                        })}
+                        setField={this.props.setField}
+                        username={username}
+                        password={password}
+                    />;
             }
-
-            return <LoginForm
-                loginAction={() => login({
-                    variables: {
-                        username,
-                        password,
-                    },
-                })}
-                setField={this.props.setField}
-                username={username}
-                password={password}
-                isSuccess={isLoggedin}
-            />;
-        }
         }
         </Mutation>;
     }

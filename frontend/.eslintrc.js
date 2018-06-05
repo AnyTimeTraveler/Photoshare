@@ -209,7 +209,7 @@ module.exports = {
             before: true,
             after: true,
         }],
-        'line-comment-position': ERROR,
+        'line-comment-position': OFF,
         'linebreak-style': ERROR,
         'lines-around-comment': OFF,
         'lines-around-directive': [ ERROR, {

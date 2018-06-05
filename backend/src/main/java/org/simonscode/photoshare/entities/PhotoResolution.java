@@ -1,5 +1,7 @@
 package org.simonscode.photoshare.entities;
 
+import io.leangen.graphql.annotations.GraphQLIgnore;
+import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -13,6 +15,16 @@ public class PhotoResolution {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     @Setter(AccessLevel.PRIVATE)
+    @GraphQLQuery(name = "id")
     private Long id;
+
+    @GraphQLQuery(name = "width")
+    private int width;
+
+    @GraphQLQuery(name = "height")
+    private int height;
+
+    @GraphQLIgnore
+    private byte[] data;
 
 }
