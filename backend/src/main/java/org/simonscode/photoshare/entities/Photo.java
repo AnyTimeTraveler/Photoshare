@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,15 +24,12 @@ public class Photo {
             joinColumns={@JoinColumn(name="photo_id")},
             inverseJoinColumns={@JoinColumn(name="tag_id")})
     @GraphQLQuery(name = "tags")
-    private Set<Tag> tags;
+    @Setter(AccessLevel.PRIVATE)
+    private Set<Tag> tags = new HashSet<>();
 
-    @Column(name = "data")
-    private Set<PhotoResolution> resolutions;
-
-    @GraphQLQuery(name = "url")
-    public String getURL() {
-        return "/files/" + getId();
-    }
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = PhotoResolution.class)
+    @Setter(AccessLevel.PRIVATE)
+    private Set<PhotoResolution> resolutions = new HashSet<>();
 
     @GraphQLQuery(name = "filename")
     private String filename;

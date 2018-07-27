@@ -6,8 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
-@Table(schema = "imageprocessor")
+//@Entity
 @Data
 public class ImageToBeProcessed {
     @Id

@@ -1,10 +1,8 @@
-const webpack = require('webpack');
-
 module.exports = {
     entry: [
-        'react-hot-loader/patch',
         './src/index.jsx',
     ],
+    mode: 'production',
     module: {
         rules: [
             {
@@ -41,21 +39,5 @@ module.exports = {
         path: `${__dirname}/public`,
         publicPath: '/',
         filename: 'bundle.js',
-    },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-    ],
-    devtool: 'source-map',
-    devServer: {
-        proxy: {
-            '/graphql': 'http://localhost:8080/',
-            '/api': 'http://localhost:8080/',
-        },
-        disableHostCheck: true,
-        host: '0.0.0.0',
-        port: 8000,
-        contentBase: './public',
-        historyApiFallback: true,
-        hot: true,
     },
 };

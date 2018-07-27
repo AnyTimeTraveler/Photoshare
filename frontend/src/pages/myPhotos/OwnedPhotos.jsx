@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import gql from 'graphql-tag';
-import apolloClient from '../../state/ApolloClient';
+import apolloClient from '../../ApolloClient';
 import ImageList from '../../components/presentational/image/ImageList';
 import SingleImageView from '../../components/presentational/image/SingleImageView';
 import {
@@ -17,6 +17,9 @@ const LIST_PHOTOS = gql`
         getOwnedPhotos {
             id
             filename
+            resolutions {
+                url
+            }
         }
     }
 `;
@@ -87,7 +90,7 @@ export default class OwnedPhotos extends Component {
                     onPrevious={previousItem}
                     onLeave={deselect}
                 /> :
-                <ImageList ids={items} onClick={setCurrentItem.bind(this)}/>
+                <ImageList items={items} onClick={setCurrentItem.bind(this)}/>
             }
         </div>;
     }

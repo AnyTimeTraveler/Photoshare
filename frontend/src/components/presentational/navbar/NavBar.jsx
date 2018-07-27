@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import NavBarLink from './NavBarLink';
 import { connect } from 'react-redux';
-import { authLoginSuccess } from '../../../state/auth/actions';
+
 import UserIcon from './UserIcon';
+import NavBarLink from './NavBarLink';
+import { authLoginSuccess } from '../../../state/auth/actions';
 
 @connect(state => ({
     user: state.auth.user,
@@ -27,7 +28,8 @@ export default class NavBar extends Component {
                     <NavBarLink to={'/upload'}>Upload</NavBarLink>
                     <NavBarLink to={'/search'}>Search</NavBarLink>
                     <NavBarLink to={'/settings'}>Settings</NavBarLink>
-                    <a className={'navbar-item'} onClick={() => this.props.authLoginSuccess({ id: 1 })}>Login</a>
+                    <NavBarLink to={'/login'}>Login</NavBarLink>
+                    {/* <a className={'navbar-item'} onClick={() => this.props.authLoginSuccess({ id: 1 })}>Login</a> */}
                 </div>
 
                 <div className={'navbar-end'}>

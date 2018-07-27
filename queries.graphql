@@ -1,0 +1,76 @@
+mutation simon {
+  createUser(username: "simon",
+    firstName: "Simon",
+    lastName: "Struck",
+    email: "simonstruck70@gmail.com",
+    passwordHash: "testpass") {
+    firstName
+    lastName
+    email
+    passwordHash
+    username
+  }
+}
+
+mutation simon2 {
+  createUser(username: "simon2",
+    firstName: "Simon",
+    lastName: "Struck",
+    email: "simonstruck71@gmail.com",
+    passwordHash: "testpass2") {
+    firstName
+    lastName
+    email
+    passwordHash
+    username
+  }
+}
+
+query list {
+  listUsers {
+    username,
+    id
+  }
+}
+
+mutation login_correct {
+  login(username: "simon",
+  passwordHash: "testpass") {
+    id
+  }
+}
+
+mutation login_incorrect {
+  login(username: "simon",
+  passwordHash: "test") {
+    id
+  }
+}
+
+mutation logout {
+  logout
+}
+
+query whoami {
+  whoami {
+    username
+  }
+}
+
+mutation createTag {
+  createTag {
+    id    
+  }
+}
+
+mutation createPhoto {
+  createPhoto(tags:[]) {
+    id
+  }
+}
+
+query photosFromTag {
+  getPhotosOfTag(tag: 1) {
+    id
+  }
+}

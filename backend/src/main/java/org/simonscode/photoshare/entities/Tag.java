@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,7 +29,8 @@ public abstract class Tag {
             joinColumns={@JoinColumn(name="tag_id")},
             inverseJoinColumns={@JoinColumn(name="photo_id")})
     @GraphQLQuery(name = "photos")
-    private Set<Photo> photos;
+    @Setter(AccessLevel.PRIVATE)
+    private Set<Photo> photos = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Tag.class)
     @GraphQLQuery(name = "parent")
@@ -39,5 +41,6 @@ public abstract class Tag {
             joinColumns={@JoinColumn(name="tag_id")},
             inverseJoinColumns={@JoinColumn(name="member_id")})
     @GraphQLQuery(name = "user")
-    private Set<User> user;
+    @Setter(AccessLevel.PRIVATE)
+    private Set<User> user = new HashSet<>();
 }

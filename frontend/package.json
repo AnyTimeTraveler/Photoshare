@@ -4,10 +4,11 @@
     "private": true,
     "main": "index.jsx",
     "scripts": {
-        "start": "./node_modules/.bin/webpack-dev-server --config ./webpack.config.js --color --progress --mode development",
+        "start": "./node_modules/.bin/webpack-dev-server --config ./webpack.config.development.js --color --progress",
         "lint": "eslint --color src",
         "lint-fix": "eslint --color --fix src",
-        "compile": "./node_modules/.bin/webpack"
+        "compile": "./node_modules/.bin/webpack --config ./webpack.config.production.js --color --progress",
+        "clean": "rm -rf ./public/bundle.js"
     },
     "devDependencies": {
         "apollo-boost": "^0.1.7",

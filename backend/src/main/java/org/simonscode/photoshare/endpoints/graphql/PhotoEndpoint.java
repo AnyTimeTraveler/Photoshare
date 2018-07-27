@@ -11,6 +11,7 @@ import org.simonscode.photoshare.repositories.PhotoRepository;
 import org.simonscode.photoshare.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-@Transactional
 public class PhotoEndpoint {
 
     private final PhotoRepository photoRepository;
@@ -31,19 +31,22 @@ public class PhotoEndpoint {
     }
 
     @GraphQLMutation(name = "createPhoto")
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public Photo create(@GraphQLArgument(name = "tags") List<Long> tagIds) {
         Photo photo = new Photo();
-        photo.setTags(tagRepository.findAllByIdIn(tagIds));
+        photo.getTags().addAll(tagRepository.findAllByIdIn(tagIds));
         photoRepository.save(photo);
         return photo;
     }
 
     @GraphQLQuery(name = "getPhotosOfTag")
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public List<Photo> getPhotosOfTag(@GraphQLArgument(name = "tag") Long tagId) {
         return photoRepository.findAllByTagID(tagId);
     }
 
     @GraphQLQuery(name = "getOwnedPhotos")
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public List<Photo> getOwnedPhotos(@GraphQLRootContext() graphql.servlet.GraphQLContext context) throws UnauthorizedException {
         Optional<HttpServletRequest> httpRequest = context.getRequest();
 

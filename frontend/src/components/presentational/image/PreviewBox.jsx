@@ -6,10 +6,11 @@ export default class PreviewBox extends Component {
         onClick: PropTypes.func.isRequired,
         id: PropTypes.number.isRequired,
         filename: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
     };
 
     render() {
-        const { onClick, id, filename } = this.props;
+        const { onClick, id, url, filename } = this.props;
 
         return <div
             className={'card'}
@@ -20,7 +21,7 @@ export default class PreviewBox extends Component {
         >
             <div className={'card-image'}>
                 <figure className={'image is-4by3'}>
-                    <img src={`/api/files/${id}`}/>
+                    <img src={url}/>
                 </figure>
             </div>
             <div className={'card-content'}>

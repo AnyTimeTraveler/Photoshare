@@ -1,46 +1,30 @@
 package org.simonscode.photoshare.endpoints.rest;
 
 
-import com.google.common.io.ByteStreams;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.simonscode.photoshare.entities.Photo;
-import org.simonscode.photoshare.entities.User;
-import org.simonscode.photoshare.repositories.PhotoRepository;
+import org.simonscode.photoshare.entities.PhotoResolution;
+import org.simonscode.photoshare.repositories.PhotoResolutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Optional;
 
 @Service
 public class DatabaseStorageService implements StorageService {
 
-    private PhotoRepository photoRepository;
+    private PhotoResolutionRepository photoResolutionRepository;
 
     @Autowired
-    public DatabaseStorageService(PhotoRepository photoRepository) {
-        this.photoRepository = photoRepository;
+    public DatabaseStorageService(PhotoResolutionRepository photoResolutionRepository) {
+        this.photoResolutionRepository = photoResolutionRepository;
     }
 
     @Override
-    public Long store(User user, InputStream inputStream, FormDataContentDisposition fileDetail) throws IOException {
-        String filename = StringUtils.cleanPath(fileDetail.getFileName());
-
-        Photo photo = new Photo();
-        photo.setOwner(user);
-        photo.setFilename(filename);
-        photo.setData(ByteStreams.toByteArray(inputStream));
-        photoRepository.save(photo);
-        return photo.getId();
+    public PhotoResolution store(long id, byte[] data) {
+        PhotoResolution resolution = new PhotoResolution();
+        resolution.setData(data);
+        return photoResolutionRepository.save(resolution);
     }
 
     @Override
-    public byte[] load(Long fileId) throws IOException {
-        Optional<Photo> photo = photoRepository.findById(fileId);
-        if (!photo.isPresent()) throw new FileNotFoundException();
-        return photo.get().getData();
+    public byte[] getBytes(long id) {
+        return photoResolutionRepository.findById(id).map(PhotoResolution::getData).orElse(null);
     }
 }

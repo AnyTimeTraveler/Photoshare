@@ -15,7 +15,7 @@ public class PhotoResolution {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     @Setter(AccessLevel.PRIVATE)
-    @GraphQLQuery(name = "id")
+    @GraphQLIgnore
     private Long id;
 
     @GraphQLQuery(name = "width")
@@ -23,6 +23,11 @@ public class PhotoResolution {
 
     @GraphQLQuery(name = "height")
     private int height;
+
+    @GraphQLQuery(name = "url")
+    public String getURL() {
+        return "/api/files/" + getId();
+    }
 
     @GraphQLIgnore
     private byte[] data;

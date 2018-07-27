@@ -13,7 +13,7 @@ import Upload from './pages/upload';
 import Login from './pages/login';
 import ProtectedRoute from './components/ProtectedRoute';
 import reducers from './state/reducers';
-import apolloClient from './state/ApolloClient';
+import apolloClient from './ApolloClient';
 
 /* eslint-disable no-underscore-dangle */
 // noinspection JSUnresolvedVariable
