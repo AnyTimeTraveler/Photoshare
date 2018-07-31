@@ -1,20 +1,39 @@
 import React, { Component } from 'react';
-import Dropzone from 'react-dropzone';
-import FileUploadDropArea from '../../components/presentational/forms/FileUploadDropArea';
+import PropTypes from 'prop-types';
 import Box from '../../components/presentational/forms/Box';
 
+export default class FileUploadPreview extends Component {
+    static propTypes = {
+        file: PropTypes.object.isRequired,
+        progress: PropTypes.number.isRequired,
+        onCancel: PropTypes.func.isRequired,
+    };
 
-export default class Upload extends Component {
     render() {
-        return <Box style={{ margin: '5%' }}>
-            <Dropzone
-                style={{
-                    width: '100%',
-                    height: '100%',
-                }}>
-                <FileUploadDropArea/>
-                <div style={{ marginTop: 10 }}/>
-            </Dropzone>
+        const { file, onCancel, progress } = this.props;
+        const progressClass = progress < 100 ? 'is-info' : 'is-success';
+
+        return <Box>
+            <div className={'level'}>
+                <div className={'level-left'}>
+                    <img
+                        className={'level-item'}
+                        src={file.preview}
+                        style={{
+                            width: 50,
+                            height: 50,
+                        }}/>
+                    <div className={'level-item'}>{file.name}</div>
+                    <progress className={`level-item progress is-medium ${progressClass}`} value={progress} max={'100'}>{progress}%</progress>
+                </div>
+                <div className={'level-right'}>
+                    <a className={'level-item button is-danger'} onClick={onCancel}>
+                        <span className={'icon'}>
+                            <i className={'fas fa-times'}/>
+                        </span>
+                    </a>
+                </div>
+            </div>
         </Box>;
     }
 }

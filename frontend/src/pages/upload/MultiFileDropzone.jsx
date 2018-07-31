@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
+import FileUploadPreview from './FileUploadPreview';
+import FileUploadDropArea from '../../components/presentational/forms/FileUploadDropArea';
 
-export default class FullScreenDropZone extends Component {
+export default class MultiFileDropzone extends Component {
+    static propTypes = {
+        files: PropTypes.object.isRequired,
+        onDrop: PropTypes.func.isRequired,
+        onRemove: PropTypes.func.isRequired,
+    };
+
     constructor() {
         super();
         this.state = {
-            accept: 'image/*',
-            files: [],
             dropzoneActive: false,
         };
     }
@@ -24,21 +31,45 @@ export default class FullScreenDropZone extends Component {
     }
 
     onDrop(files) {
-        console.log(files);
+        const handleFolder = (handler, file) => {
+            console.log('File', file);
+
+            if (file.size == 0) {
+                const entry = file.webkitGetAsEntry();
+                const folderReader = entry.createReader();
+
+                const read = (reader, self, data) => {
+                    if (data.length !== 0) {
+                        data.forEach(newFile => handler(handler, newFile));
+                        reader.readEntries(self.bind(this, self));
+                    }
+                };
+                const prefilledReader = read.bind(this, read);
+
+                folderReader.readEntries(prefilledReader);
+            } else {
+                this.props.onDrop(file);
+            }
+        };
+
+        files.forEach(file => handleFolder(handleFolder, file));
         this.setState({
-            files,
             dropzoneActive: false,
         });
     }
 
     render() {
-        const { accept, files, dropzoneActive } = this.state;
+        const { dropzoneActive } = this.state;
+        const { files, onRemove } = this.props;
+
+        const dropzoneStyle = {
+            width: '100%',
+            height: '100%',
+        };
+
         const overlayStyle = {
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
+            width: '100%',
+            height: '100%',
             padding: '2.5em 0',
             background: 'rgba(0,0,0,0.5)',
             textAlign: 'center',
@@ -47,42 +78,23 @@ export default class FullScreenDropZone extends Component {
 
         return <Dropzone
             disableClick={true}
-            style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-            }}
-            accept={accept}
+            style={dropzoneActive ? overlayStyle : dropzoneStyle}
+            // accept={'image/*, video/*'}
             onDrop={this.onDrop.bind(this)}
             onDragEnter={this.onDragEnter.bind(this)}
             onDragLeave={this.onDragLeave.bind(this)}
         >
-            { dropzoneActive && <div style={overlayStyle}>Drop files...</div> }
             <div>
-                <h1>Upload</h1>
-                {/* <label htmlFor={'mimetypes'}>Enter mime types you want to accept: </label>
-                <input
-                    type={'text'}
-                    id={'mimetypes'}
-                    onChange={this.applyMimeTypes.bind(this)}
-                />*/}
-
-                <h2>Dropped files</h2>
-                <ul>
-                    {files.map((f, i) =>
-                        <li key={`file-${i}`}>{f.name} - {f.size} bytes <img
-                            src={f.preview}
-                            style={{
-                                width: 50,
-                                height: 50,
-                            }}/> </li>
+                <h1>File Upload: Just drop the files or folders in here</h1>
+                <div>
+                    {files.map((file, index) =>
+                        <FileUploadPreview key={`preview-${index}`} file={file} progress={null} onCancel={() => onRemove(index)}/>
                     )}
-                </ul>
-
+                    <div>
+                        <FileUploadDropArea onSelect={event => this.onDrop(event.files)}/>
+                        <div style={{ marginTop: 10 }}/>
+                    </div>
+                </div>
             </div>
         </Dropzone>;
     }

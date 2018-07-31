@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 
-export default class FullScreenDropZone extends Component {
+export default class FullScreenDropzone extends Component {
     constructor() {
         super();
         this.state = {
