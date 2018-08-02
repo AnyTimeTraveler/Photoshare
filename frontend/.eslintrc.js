@@ -277,7 +277,7 @@ module.exports = {
         'one-var-declaration-per-line': ERROR,
         'operator-assignment': [ ERROR, 'always' ],
         'operator-linebreak': [ ERROR, 'after' ],
-        'padded-blocks': [ ERROR, 'never' ],
+        'padded-blocks': [ OFF, 'never' ],
         'quote-props': [ ERROR, 'consistent-as-needed' ],
         'quotes': [ ERROR, 'single', {
             avoidEscape: true,
