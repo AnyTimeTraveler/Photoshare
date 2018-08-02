@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Dropzone from 'react-dropzone';
 import FileUploadPreview from './FileUploadPreview';
 import FileUploadDropArea from '../../components/presentational/forms/FileUploadDropArea';
 
 export default class MultiFileDropzone extends Component {
     static propTypes = {
-        files: PropTypes.object.isRequired,
+        files: PropTypes.array.isRequired,
         onDrop: PropTypes.func.isRequired,
         onRemove: PropTypes.func.isRequired,
     };
@@ -18,44 +17,79 @@ export default class MultiFileDropzone extends Component {
         };
     }
 
-    onDragEnter() {
+    onDragEnter(event) {
+        event.preventDefault();
+        console.log('DRAG IN!');
         this.setState({
             dropzoneActive: true,
         });
     }
 
-    onDragLeave() {
+    onDragLeave(event) {
+        event.preventDefault();
+        console.log('DRAG OUT!');
         this.setState({
             dropzoneActive: false,
         });
     }
 
-    onDrop(files) {
-        const handleFolder = (handler, file) => {
-            console.log('File', file);
+    onDrop(event) {
+        event.preventDefault();
+        console.log('DROP!');
+        const { items } = event.dataTransfer;
 
-            if (file.size == 0) {
-                const entry = file.webkitGetAsEntry();
-                const folderReader = entry.createReader();
+        for (let i = 0; i < items.length; i++) {
+            // webkitGetAsEntry is where the magic happens
+            const item = items[i].webkitGetAsEntry();
 
-                const read = (reader, self, data) => {
-                    if (data.length !== 0) {
-                        data.forEach(newFile => handler(handler, newFile));
-                        reader.readEntries(self.bind(this, self));
-                    }
-                };
-                const prefilledReader = read.bind(this, read);
-
-                folderReader.readEntries(prefilledReader);
-            } else {
-                this.props.onDrop(file);
+            if (item) {
+                this.traverseFileTree(item);
             }
-        };
+        }
 
-        files.forEach(file => handleFolder(handleFolder, file));
         this.setState({
             dropzoneActive: false,
         });
+    }
+
+    traverseFileTree(item, path) {
+        path = path || '';
+        if (item.isFile) {
+            // Get file
+            item.file(file => {
+                this.uploadFile(path, file);
+            });
+        } else if (item.isDirectory) {
+            console.log('Folder:', path + item.name);
+            // Get folder contents
+            const dirReader = item.createReader();
+
+            dirReader.readEntries(entries => {
+                for (let i = 0; i < entries.length; i++) {
+                    this.traverseFileTree(entries[i], `${path + item.name}/`);
+                }
+            });
+        }
+    }
+
+    uploadFile(path, file) {
+        console.log('File:', path + file.name);
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('POST', '/api/files/upload', true);
+        xhr.onload = () => {
+            if (xhr.status > 200 && xhr.status < 300) {
+                // File(s) uploaded.
+                console.log('Uploaded!');
+            } else {
+                console.error('Upload failed!', xhr);
+            }
+        };
+        const formData = new FormData();
+
+        formData.append('file', file, file.name);
+        xhr.send(formData);
     }
 
     render() {
@@ -76,12 +110,12 @@ export default class MultiFileDropzone extends Component {
             color: '#fff',
         };
 
-        return <Dropzone
-            disableClick={true}
+        return <div
             style={dropzoneActive ? overlayStyle : dropzoneStyle}
             // accept={'image/*, video/*'}
             onDrop={this.onDrop.bind(this)}
             onDragEnter={this.onDragEnter.bind(this)}
+            onDragOver={this.onDragEnter.bind(this)}
             onDragLeave={this.onDragLeave.bind(this)}
         >
             <div>
@@ -96,6 +130,6 @@ export default class MultiFileDropzone extends Component {
                     </div>
                 </div>
             </div>
-        </Dropzone>;
+        </div>;
     }
 }

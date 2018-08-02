@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { UPLOAD_ADD_FILES, UPLOAD_REMOVE_FILE, UPLOAD_SET_FILES } from './actions';
 
-const files = (state = {}, action) => {
+const files = (state = [], action) => {
     switch (action.type) {
     case UPLOAD_ADD_FILES:
         return state.concat(action.files);
