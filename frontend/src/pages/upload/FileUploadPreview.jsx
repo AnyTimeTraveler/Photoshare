@@ -4,8 +4,9 @@ import Box from '../../components/presentational/forms/Box';
 
 export default class FileUploadPreview extends Component {
     static propTypes = {
-        file: PropTypes.object.isRequired,
+        filename: PropTypes.string.isRequired,
         progress: PropTypes.number.isRequired,
+        preview: PropTypes.string.isRequired,
         onCancel: PropTypes.func.isRequired,
     };
 
