@@ -4,7 +4,7 @@ export const setFieldReducer = (types, defaultValue, fieldName = 'value') =>
 
         if (types.includes(action.type)) {
             for (const field of fieldName.split('.')) {
-                tempAction = tempAction[ field ];
+                tempAction = tempAction[field];
             }
             return tempAction;
         }
@@ -14,10 +14,10 @@ export const setFieldReducer = (types, defaultValue, fieldName = 'value') =>
 //
 export const objectControlReducer = (setFieldTypes, defaultValue) =>
     (state = defaultValue, action) => {
-        if (setFieldTypes.includes(action.type) && state[ action.field ] !== action.value) {
+        if (setFieldTypes.includes(action.type) && state[action.field] !== action.value) {
             return {
                 ...state,
-                [ action.field ]: action.value,
+                [action.field]: action.value,
             };
         }
         return state;
@@ -25,10 +25,10 @@ export const objectControlReducer = (setFieldTypes, defaultValue) =>
 
 export const pathControlReducer = (setFieldTypes, defaultValue) =>
     (state = defaultValue, action) => {
-        if (setFieldTypes.includes(action.type) && state[ action.field ] !== action.value) {
+        if (setFieldTypes.includes(action.type) && state[action.field] !== action.value) {
             const fields = action.field.split('.');
 
-            if (fields.reduce((s = {}, f) => s[ f ], state) === action.value) {
+            if (fields.reduce((s = {}, f) => s[f], state) === action.value) {
                 return state;
             }
 
@@ -38,22 +38,22 @@ export const pathControlReducer = (setFieldTypes, defaultValue) =>
             // eslint-disable-next-line
             for (let i = 0; i < fields.length; i++) {
                 if (i === fields.length - 1) {
-                    if (temp[ fields[ i ] ] === action.value) {
+                    if (temp[fields[i]] === action.value) {
                         return state;
                     }
-                    temp[ fields[ i ] ] = action.value;
+                    temp[fields[i]] = action.value;
                     return newState;
                 }
-                temp[ fields[ i ] ] = Object.assign({}, temp[ fields[ i ] ]);
-                if (!temp[ fields[ i ] ]) {
-                    temp[ fields[ i ] ] = {};
+                temp[fields[i]] = Object.assign({}, temp[fields[i]]);
+                if (!temp[fields[i]]) {
+                    temp[fields[i]] = {};
                 }
-                temp = temp[ fields[ i ] ];
+                temp = temp[fields[i]];
             }
 
             return {
                 ...state,
-                [ action.field ]: action.value,
+                [action.field]: action.value,
             };
         }
         return state;
@@ -63,8 +63,8 @@ export const pathControlReducer = (setFieldTypes, defaultValue) =>
 // give an object of actionType=>boolean for setting this boolean in a composed state
 export const booleanControlReducer = (types, defaultValue) =>
     (state = defaultValue, action) => {
-        if (typeof types[ action.type ] !== 'undefined') {
-            return types[ action.type ];
+        if (typeof types[action.type] !== 'undefined') {
+            return types[action.type];
         }
         return state;
     };
@@ -81,12 +81,12 @@ const subMerge = (resultObject, objectA, objectB, mergeFunction) => {
 
     for (const key in objectA) {
         if (objectA.hasOwnProperty(key)) {
-            keys[ key ] = true;
+            keys[key] = true;
         }
     }
     for (const key in objectB) {
         if (objectB.hasOwnProperty(key)) {
-            keys[ key ] = true;
+            keys[key] = true;
         }
     }
     for (const key in keys) {
@@ -94,14 +94,14 @@ const subMerge = (resultObject, objectA, objectB, mergeFunction) => {
             continue;
         }
         if (!objectA.hasOwnProperty(key)) {
-            resultObject[ key ] = objectB[ key ];
-        } else if (!objectB.hasOwnProperty(key) || objectA[ key ] == objectB[ key ]) {
-            resultObject[ key ] = objectA[ key ];
-        } else if (typeof objectA[ key ] === 'object' && typeof objectB[ key ] === 'object' && !Array.isArray(objectA[ key ]) && !Array.isArray(objectB[ key ])) {
-            resultObject[ key ] = {};
-            subMerge(resultObject[ key ], objectA[ key ], objectB[ key ], mergeFunction);
+            resultObject[key] = objectB[key];
+        } else if (!objectB.hasOwnProperty(key) || objectA[key] == objectB[key]) {
+            resultObject[key] = objectA[key];
+        } else if (typeof objectA[key] === 'object' && typeof objectB[key] === 'object' && !Array.isArray(objectA[key]) && !Array.isArray(objectB[key])) {
+            resultObject[key] = {};
+            subMerge(resultObject[key], objectA[key], objectB[key], mergeFunction);
         } else {
-            resultObject[ key ] = mergeFunction(objectA[ key ], objectB[ key ]);
+            resultObject[key] = mergeFunction(objectA[key], objectB[key]);
         }
     }
 };
