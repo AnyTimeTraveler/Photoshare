@@ -11,7 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 @RestController()
 public class FileUploadRessource {
@@ -45,6 +47,14 @@ public class FileUploadRessource {
     public void handleFileUpload(@RequestPart("file") MultipartFile file,
                                  HttpServletRequest request,
                                  HttpServletResponse response) throws IOException {
+        if(file != null) {
+            File targetFile = new File("files/" + file.getOriginalFilename());
+            System.out.println(targetFile.getAbsolutePath());
+            targetFile.createNewFile();
+            Files.write(targetFile.toPath(),file.getBytes());
+            response.sendError(HttpServletResponse.SC_CREATED, "{'result': 'You successfully uploaded " + file.getOriginalFilename() + "!'}");
+            return;
+        }
 
         User user = (User) request.getSession().getAttribute("user");
         if (user != null) {
@@ -59,5 +69,4 @@ public class FileUploadRessource {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Not logged in!");
         }
     }
-
 }

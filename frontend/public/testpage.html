@@ -16,7 +16,7 @@
             if (item.isFile) {
                 // Get file
                 item.file(function(file) {
-                    console.log("File:", path + file.name);
+                    uploadFile(path, file);
                 });
             } else if (item.isDirectory) {
                 console.log("Folder:", path + item.name);
@@ -32,6 +32,7 @@
 
         dropArea.addEventListener("drop", function(event) {
             event.preventDefault();
+            event.srcElement.textContent = "Dropped!";
 
             var items = event.dataTransfer.items;
             for (var i=0; i<items.length; i++) {
@@ -45,21 +46,26 @@
 
         dropArea.addEventListener("dragover", function(event) {
             event.preventDefault();
+            event.srcElement.textContent = "Hovering...";
         }, false);
 
-        // var xhr = new XMLHttpRequest();
-        // xhr.open('POST', 'handler.php', true);
-        // xhr.onload = function () {
-        //     if (xhr.status === 200) {
-        //         // File(s) uploaded.
-        //         uploadButton.innerHTML = 'Upload';
-        //     } else {
-        //         alert('An error occurred!');
-        //     }
-        // };
-        // var formData = new FormData();
-        // formData.append('data', file, file.name);
-        // xhr.send(formData);
+        function uploadFile(path, file) {
+            console.log("File:", path + file.name);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/files/upload', true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // File(s) uploaded.
+                    console.log("Uploaded!");
+                } else {
+                    console.error("Upload failed!", xhr);
+                }
+            };
+            var formData = new FormData();
+            formData.append('file', file, file.name);
+            xhr.send(formData);
+        }
     </script>
 </body>
 </html>
